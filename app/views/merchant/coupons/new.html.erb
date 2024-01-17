@@ -1,0 +1,16 @@
+<%= form_with url: "/merchants/#{@merchant.id}/coupons", method: :post, data: { turbo: false } do |form| %>
+    <%= form.hidden_field :merchant_id, value: @merchant.id %>
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name, value: "" %>
+    <br>
+    <%= form.label :code, "Code" %>
+    <%= form.text_field :code, value: "" %>
+    <br>
+    <%= form.label :percent_off, "Percent off" %>
+    <%= form.text_field :percent_off, value: "" %>
+    <br>
+    <%= form.label :dollar_off, "Dollar off" %>
+    <%= form.text_field :dollar_off, value: "" %>
+    <br>
+    <%= form.submit "Submit" %>
+<% end %>
