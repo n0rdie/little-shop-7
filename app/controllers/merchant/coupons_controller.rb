@@ -23,4 +23,14 @@ class Merchant::CouponsController < ApplicationController
     def show
         @coupon = Coupon.find(params[:id])
     end
+
+    def update
+        coupon = Coupon.find(params[:id])
+        if coupon.status == 1
+            coupon.update(status: 0)
+        else
+            coupon.update(status: 1)
+        end
+        redirect_to "/merchants/#{coupon.merchant_id}/coupons/#{coupon.id}"
+    end
 end

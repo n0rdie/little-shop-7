@@ -8,3 +8,4 @@
 <% end %>
 <h1><%= @coupon.status %></h1>
 <h1>Used: <%= @coupon.times_used %> times</h1>
+<%=button_to "Activate/Deactivate", "/merchants/#{@coupon.merchant_id}/coupons/#{@coupon.id}", method: :patch%>

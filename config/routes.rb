@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index], controller: "merchant/dashboard"
     resources :items, only: [:index, :show, :edit, :update, :new, :create], controller: "merchant/items"
     resources :invoices, only: [:index, :show], controller: "merchant/invoices"
-    resources :coupons, only: [:index, :new, :create, :show], controller: "merchant/coupons"
+    resources :coupons, only: [:index, :new, :create, :show, :update], controller: "merchant/coupons"
   end
   patch "/merchants/:merchant_id/invoice_items/:invoice_item_id", to: "merchant/invoice_items#update"
 
