@@ -61,7 +61,7 @@ RSpec.describe "Merchant Dashboards", type: :feature do
       merchant.items.each do |item|
         if !merchant.items.ready_to_ship.include? (item)
           item.invoice_items.each do |inv_item|
-            expect(page).to_not have_content(inv_item.invoice_id)
+            expect(page).to_not have_content(inv_item.invoice_id) # ALSO NOT QUINS
           end
         end
       end

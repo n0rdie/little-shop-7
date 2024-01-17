@@ -125,6 +125,28 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
   end
 
+  it "7. Merchant Invoice Show Page: Subtotal and Grand Total Revenues -- Free Check" do
+    @merchant_3 = Merchant.create(name: "Chucky Cheese")
+    @coupon_1 = @merchant_3.coupons.create(name: "$10 off", code: "10off", dollar_off: 9999999, status: 0)
+    @item_4 = @merchant_3.items.create(name: "Moldy Cheese", description: "ew", unit_price: 1199, merchant_id: @merchant_3.id)
+    @item_5 = @merchant_3.items.create(name: "Fortnite Amongus", description: "ew", unit_price: 20, merchant_id: @merchant_3.id)
+    @invoice_3 = @coupon_1.invoices.create(coupon_id: @coupon_1.id, customer: @customer_1, created_at: 5.days.ago, status: "in progress")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_4, quantity: 5, unit_price: @item_4.unit_price, status: "packaged")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_5, quantity: 10, unit_price: @item_5.unit_price, status: "packaged")
+    # When I visit one of my merchant invoice show pages
+    visit "merchants/#{@merchant_3.id}/invoices/#{@invoice_3.id}"
+    # And I see the name and code of the coupon used as a link to that coupon's show page.
+    expect(page).to have_content(@coupon_1.name)
+    expect(page).to have_link(@coupon_1.code)
+    # I see the subtotal for my merchant from this invoice (that is, the total that does not include coupon discounts)
+    expect(page).to have_content(6195)
+    # And I see the grand total revenue after the discount was applied
+    expect(page).to have_content(0)
+    
+    click_on(@coupon_1.code)
+    expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
+  end
+
   it "7. Merchant Invoice Show Page: Subtotal and Grand Total Revenues -- Percent" do
     @merchant_3 = Merchant.create(name: "Chucky Cheese")
     @coupon_1 = @merchant_3.coupons.create(name: "$10 off", code: "10off", percent_off: 5, status: 0)
@@ -145,5 +167,23 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     
     click_on(@coupon_1.code)
     expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
+  end
+
+  it "7. Merchant Invoice Show Page: Subtotal and Grand Total Revenues -- No coupon" do
+    @merchant_3 = Merchant.create(name: "Chucky Cheese")
+    @item_4 = @merchant_3.items.create(name: "Moldy Cheese", description: "ew", unit_price: 1199, merchant_id: @merchant_3.id)
+    @item_5 = @merchant_3.items.create(name: "Fortnite Amongus", description: "ew", unit_price: 20, merchant_id: @merchant_3.id)
+    @invoice_3 = @customer_1.invoices.create(customer: @customer_1, created_at: 5.days.ago, status: "in progress")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_4, quantity: 5, unit_price: @item_4.unit_price, status: "packaged")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_5, quantity: 10, unit_price: @item_5.unit_price, status: "packaged")
+    # When I visit one of my merchant invoice show pages
+    visit "merchants/#{@merchant_3.id}/invoices/#{@invoice_3.id}"
+    # And I see the name and code of the coupon used as a link to that coupon's show page.
+    # I see the subtotal for my merchant from this invoice (that is, the total that does not include coupon discounts)
+    expect(page).to have_content(6195)
+    # And I see the grand total revenue after the discount was applied
+    expect(page).to_not have_content(5885)
+    expect(page).to_not have_content(5195)
+    expect(@invoice_3.revenue_of_only_couponed_items).to eq(0)
   end
 end 

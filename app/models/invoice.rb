@@ -46,8 +46,6 @@ class Invoice < ApplicationRecord
       end
     elsif self.coupon.percent_off != nil
       (self.subtotal_revenue - self.revenue_of_only_couponed_items + (self.revenue_of_only_couponed_items * (100-self.coupon.percent_off) / 100)).to_f.ceil
-    else
-      invoice_items.sum("quantity * unit_price")
     end
     
   end

@@ -25,12 +25,12 @@ class Merchant::CouponsController < ApplicationController
     end
 
     def update
-        coupon = Coupon.find(params[:id])
-        if coupon.status == 1
-            coupon.update(status: 0)
+        @coupon = Coupon.find(params[:id])
+        if @coupon.status == "inactive"
+            @coupon.update(status: "active")
         else
-            coupon.update(status: 1)
+            @coupon.update(status: "inactive")
         end
-        redirect_to "/merchants/#{coupon.merchant_id}/coupons/#{coupon.id}"
+        redirect_to "/merchants/#{@coupon.merchant_id}/coupons/#{@coupon.id}"
     end
 end

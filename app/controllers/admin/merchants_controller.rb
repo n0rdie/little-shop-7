@@ -36,7 +36,7 @@ class Admin::MerchantsController < ApplicationController
       flash[:notice] = "Merchant information updated."
       redirect_to admin_merchant_path(@merchant)
     else
-      render :edit
+      render :edit # NOT QUINS, NOT DELETING IT INCASE IT BREAKS SOMETHING
     end
   end
 

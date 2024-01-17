@@ -23,6 +23,7 @@ RSpec.describe "Coupon Show", type: :feature do
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons/#{@coupon_1.id}")
     # And I can see that its status is now listed as 'inactive'.
     expect(page).to have_content("inactive")
+    #expect(@coupon_1.status).to eq("inactive")
   end
 
   it "5. Merchant Coupon Activate" do 
@@ -38,5 +39,6 @@ RSpec.describe "Coupon Show", type: :feature do
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons/#{@coupon_1.id}")
     # And I can see that its status is now listed as 'active'.
     expect(page).to have_content("active")
+    expect(@coupon_1.status).to eq("active")
   end
 end 
