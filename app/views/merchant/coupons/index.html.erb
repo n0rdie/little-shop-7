@@ -1,13 +1,33 @@
 <h1><%= @merchant.name %>'s coupons</h1>
-<% @merchant.coupons.each do |coupon| %>
-    <div id="coupon-<%= coupon.id %>">
-        <h2><%= link_to coupon.name, "/merchants/#{@merchant.id}/coupons/#{coupon.id}" %></h2>
-        <% if coupon.percent_off != nil %>
-            <h3><%= coupon.percent_off %>%</h3>
-        <% elsif coupon.dollar_off != nil %>
-            <h3><%= coupon.dollar_off %></h3>
+
+<section class="activated-coupons">
+    <% @merchant.coupons.each do |coupon| %>
+        <% if coupon.status = 0 %>
+            <div id="coupon-<%= coupon.id %>">
+                <h2><%= link_to coupon.name, "/merchants/#{@merchant.id}/coupons/#{coupon.id}" %></h2>
+                <% if coupon.percent_off != nil %>
+                    <h3><%= coupon.percent_off %>%</h3>
+                <% elsif coupon.dollar_off != nil %>
+                    <h3><%= coupon.dollar_off %></h3>
+                <% end %>
+            </div>
         <% end %>
-    </div>
-<% end %>
+    <% end %>
+</section>
+
+<section class="deactivated-coupons">
+    <% @merchant.coupons.each do |coupon| %>
+        <% if coupon.status = 1 %>
+            <div id="coupon-<%= coupon.id %>">
+                <h2><%= link_to coupon.name, "/merchants/#{@merchant.id}/coupons/#{coupon.id}" %></h2>
+                <% if coupon.percent_off != nil %>
+                    <h3><%= coupon.percent_off %>%</h3>
+                <% elsif coupon.dollar_off != nil %>
+                    <h3><%= coupon.dollar_off %></h3>
+                <% end %>
+            </div>
+        <% end %>
+    <% end %>
+</section>
 
 <h2><%= link_to "Create new coupon", "/merchants/#{@merchant.id}/coupons/new" %></h2>
