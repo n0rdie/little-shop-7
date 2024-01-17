@@ -2,7 +2,8 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :items, through: :invoice_items
   has_many :transactions
-  belongs_to :customer
+  belongs_to :customer#, optional: true
+  belongs_to :coupon, optional: true
 
   enum status: {
     "cancelled": 0,

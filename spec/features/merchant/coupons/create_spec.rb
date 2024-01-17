@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Coupon Index", type: :feature do
+RSpec.describe "Coupon Create", type: :feature do
   before(:each) do
     @merchant_1 = Merchant.create(name: "Chucky Cheese")
     @coupon_1 = @merchant_1.coupons.create(name: "$10 off", code: "10off", dollar_off: 10)

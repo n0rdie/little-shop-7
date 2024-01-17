@@ -19,4 +19,8 @@ class Merchant::CouponsController < ApplicationController
         end
         redirect_to "/merchants/#{params[:merchant_id]}/coupons"
     end
+
+    def show
+        @coupon = Coupon.find(params[:id])
+    end
 end

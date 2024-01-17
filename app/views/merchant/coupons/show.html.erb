@@ -1,0 +1,10 @@
+<h1>Name: <%= @coupon.name %></h1>
+<h1>Code: <%= @coupon.code %></h1>
+<% if @coupon.dollar_off != nil %>
+    <h1>$<%= @coupon.dollar_off %> off</h1>
+<% end %>
+<% if @coupon.percent_off != nil %>
+    <h1><%= @coupon.percent_off %>% off</h1>
+<% end %>
+<h1><%= @coupon.status %></h1>
+<h1>Used: <%= @coupon.times_used %> times</h1>

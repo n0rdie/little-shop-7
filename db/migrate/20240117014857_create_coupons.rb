@@ -6,6 +6,7 @@ class CreateCoupons < ActiveRecord::Migration[7.0]
       t.integer :percent_off
       t.integer :dollar_off
       t.integer :merchant_id
+      t.integer :invoice_id
       t.integer :status
 
       t.timestamps

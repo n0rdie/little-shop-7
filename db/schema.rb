@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_17_014857) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_17_054749) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_17_014857) do
     t.integer "percent_off"
     t.integer "dollar_off"
     t.integer "merchant_id"
+    t.integer "invoice_id"
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -43,6 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_17_014857) do
 
   create_table "invoices", force: :cascade do |t|
     t.integer "customer_id"
+    t.integer "coupon_id"
     t.integer "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -74,6 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_17_014857) do
     t.datetime "updated_at"
   end
 
+  add_foreign_key "coupons", "merchants"
   add_foreign_key "invoice_items", "invoices"
   add_foreign_key "invoice_items", "items"
   add_foreign_key "invoices", "customers"
