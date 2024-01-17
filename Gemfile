@@ -65,7 +65,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "web-console", :group => :production
+  gem "web-console", group: :development#, :group => :production
   # Use console on exceptions pages [https://github.com/rails/web-console]
   
 
