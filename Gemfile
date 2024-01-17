@@ -51,21 +51,21 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  #gem "pry"
-  gem "rspec-rails"
-  gem "factory_bot_rails"
-  gem "faker"
-  gem "capybara"
-  gem "simplecov"
-  gem "shoulda-matchers"
-  gem "launchy"
-  gem "orderly"
-  gem "timecop", "~> 0.9.8"
+  gem "pry", :group => :production
+  gem "rspec-rails", :group => :production
+  gem "factory_bot_rails", :group => :production
+  gem "faker", :group => :production
+  gem "capybara", :group => :production
+  gem "simplecov", :group => :production
+  gem "shoulda-matchers", :group => :production
+  gem "launchy", :group => :production
+  gem "orderly", :group => :production
+  gem "timecop", "~> 0.9.8", :group => :production
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
+  gem "web-console", :group => :production
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
