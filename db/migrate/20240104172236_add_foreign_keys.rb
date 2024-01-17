@@ -5,5 +5,6 @@ class AddForeignKeys < ActiveRecord::Migration[7.0]
     add_foreign_key :invoice_items, :items
     add_foreign_key :invoice_items, :invoices
     add_foreign_key :transactions, :invoices
+    add_foreign_key :coupons, :merchants
   end
 end
