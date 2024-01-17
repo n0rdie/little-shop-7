@@ -114,13 +114,15 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     # When I visit one of my merchant invoice show pages
     visit "merchants/#{@merchant_3.id}/invoices/#{@invoice_3.id}"
     # And I see the name and code of the coupon used as a link to that coupon's show page.
-    expect(page).to have_content(@coupon_1.name)
-    expect(page).to have_link(@coupon_1.code)
+    within '.coupon' do
+      expect(page).to have_content(@coupon_1.name)
+      expect(page).to have_link(@coupon_1.code)
+    end
     # I see the subtotal for my merchant from this invoice (that is, the total that does not include coupon discounts)
     expect(page).to have_content(6195)
     # And I see the grand total revenue after the discount was applied
     expect(page).to have_content(5195)
-    
+      
     click_on(@coupon_1.code)
     expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
   end
@@ -136,14 +138,17 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     # When I visit one of my merchant invoice show pages
     visit "merchants/#{@merchant_3.id}/invoices/#{@invoice_3.id}"
     # And I see the name and code of the coupon used as a link to that coupon's show page.
-    expect(page).to have_content(@coupon_1.name)
-    expect(page).to have_link(@coupon_1.code)
+    within '.coupon' do
+      expect(page).to have_content(@coupon_1.name)
+      expect(page).to have_link(@coupon_1.code)
+    end
     # I see the subtotal for my merchant from this invoice (that is, the total that does not include coupon discounts)
     expect(page).to have_content(6195)
     # And I see the grand total revenue after the discount was applied
     expect(page).to have_content(0)
-    
+      
     click_on(@coupon_1.code)
+    
     expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
   end
 
@@ -158,14 +163,17 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     # When I visit one of my merchant invoice show pages
     visit "merchants/#{@merchant_3.id}/invoices/#{@invoice_3.id}"
     # And I see the name and code of the coupon used as a link to that coupon's show page.
-    expect(page).to have_content(@coupon_1.name)
-    expect(page).to have_link(@coupon_1.code)
+    within '.coupon' do
+      expect(page).to have_content(@coupon_1.name)
+      expect(page).to have_link(@coupon_1.code)
+    end
     # I see the subtotal for my merchant from this invoice (that is, the total that does not include coupon discounts)
     expect(page).to have_content(6195)
     # And I see the grand total revenue after the discount was applied
     expect(page).to have_content(5885)
-    
+      
     click_on(@coupon_1.code)
+    
     expect(page).to have_current_path("/merchants/#{@merchant_3.id}/coupons/#{@coupon_1.id}")
   end
 
@@ -184,6 +192,7 @@ RSpec.describe "Merchant Dashboards", type: :feature do
     # And I see the grand total revenue after the discount was applied
     expect(page).to_not have_content(5885)
     expect(page).to_not have_content(5195)
+    
     expect(@invoice_3.revenue_of_only_couponed_items).to eq(0)
   end
 end 
