@@ -18,8 +18,38 @@ class Invoice < ApplicationRecord
       .order(created_at: :asc)
   end
 
+  def subtotal_revenue
+    invoice_items
+      .sum("quantity * unit_price")
+  end
+
+  def revenue_of_only_couponed_items
+    if self.coupon
+      coupon_merchant = coupon.merchant
+      invoice_items
+        .joins(item: :merchant)
+        .where(item: { merchant: coupon_merchant })
+        .sum("quantity * invoice_items.unit_price")
+    else
+      0
+    end
+  end
+
   def total_revenue
-    invoice_items.sum("quantity * unit_price")
+    return invoice_items.sum("quantity * unit_price") unless self.coupon != nil && self.coupon.status = 0
+    
+    if self.coupon.dollar_off != nil
+      if self.coupon.dollar_off < self.revenue_of_only_couponed_items
+        self.subtotal_revenue - self.coupon.dollar_off
+      else
+        self.subtotal_revenue - self.revenue_of_only_couponed_items
+      end
+    elsif self.coupon.percent_off != nil
+      (self.subtotal_revenue - self.revenue_of_only_couponed_items + (self.revenue_of_only_couponed_items * (100-self.coupon.percent_off) / 100)).to_f.ceil
+    else
+      invoice_items.sum("quantity * unit_price")
+    end
+    
   end
 
 end

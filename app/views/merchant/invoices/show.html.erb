@@ -1,11 +1,15 @@
 <h1>Invoice viewer</h1>
 <h1>ID <%= @invoice.id %></h1>
+<h2>Subtotal revenue <%= @invoice.subtotal_revenue %></h2>
 <h2>Total revenue <%= @invoice.total_revenue %></h2>
 <h3>Status <%= @invoice.status %></h3>
 <h3>Created at <%= @invoice.created_at.strftime('%A, %B %d, %Y') %></h3>
 <h3>Customer <%= @customer.first_name %> <%= @customer.last_name %></h3>
 
-<br>
+<% if @invoice.coupon != nil %>
+    <h2>Coupon: <%= @invoice.coupon.name %></h2>
+    <h2>Code: <%= link_to @invoice.coupon.code, "/merchants/#{@invoice.coupon.merchant_id}/coupons/#{@invoice.coupon.id}" %></h2>
+<% end %>
 
 <section class='items'>
     <% @invoice.items.each do |item| %>
