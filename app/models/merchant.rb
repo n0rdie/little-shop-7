@@ -9,6 +9,10 @@ class Merchant < ApplicationRecord
     enabled: 1
   }
 
+  def num_active_coupons
+    coupons.where("status = 0").count
+  end
+
   def self.top_5_merchants
     Merchant.joins(invoice_items: [invoice: :transactions])
       .select("merchants.*", "sum(invoice_items.quantity * invoice_items.unit_price) as sales")

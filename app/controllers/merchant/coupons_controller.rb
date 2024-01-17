@@ -10,7 +10,7 @@ class Merchant::CouponsController < ApplicationController
 
     def create
         merchant = Merchant.find(params[:merchant_id])
-        if params[:name].length > 0 && params[:code].length > 0
+        if params[:name].length > 0 && params[:code].length > 0 && merchant.num_active_coupons < 5
             if params[:percent_off].length > 0
                 merchant.coupons.create(name: params[:name], code: params[:code], percent_off: params[:percent_off].to_i, merchant_id: params[:merchant_id])
             elsif params[:dollar_off].length > 0

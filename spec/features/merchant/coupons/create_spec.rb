@@ -53,4 +53,35 @@ RSpec.describe "Coupon Create", type: :feature do
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons")
     expect(page).to_not have_content("Nothing")
   end
+
+  it "2. Merchant Coupon Create -- SAD (too many active coupons)" do 
+    coupon_3 = @merchant_1.coupons.create(name: "agepin", code: "rouesbg", dollar_off: 10)
+    coupon_4 = @merchant_1.coupons.create(name: "obg", code: "ojaegs", dollar_off: 10)
+    coupon_5 = @merchant_1.coupons.create(name: "egpnia", code: "bgour", dollar_off: 10)
+
+    visit "/merchants/#{@merchant_1.id}/coupons"
+    click_on("Create new coupon")
+
+    fill_in "Name", with: "Nothing"
+    fill_in "Code", with: "Nothing"
+    fill_in "Percent off", with: "5"
+
+    click_on("Submit")
+
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons")
+    
+    expect(page).to_not have_content("Nothing")
+
+    click_on("Create new coupon")
+
+    fill_in "Name", with: "Supersale"
+    fill_in "Code", with: "Supersale"
+    fill_in "Dollar off", with: "10"
+
+    click_on("Submit")
+
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons")
+    
+    expect(page).to_not have_content("Supersale")
+  end
 end 
