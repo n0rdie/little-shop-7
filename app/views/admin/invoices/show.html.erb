@@ -21,6 +21,15 @@
   <p><strong>Customer Name:</strong> <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></p>
 </div>
 
+<% if @invoice.coupon != nil %>
+  <div>
+    <p><strong>Coupon:</strong> <%= @invoice.coupon.name %></p>
+    <p><strong>Code:</strong> <%= @invoice.coupon.code %></p>
+    <p><strong>Subtotal:</strong> <%= @invoice.subtotal_revenue %></p>
+    <p><strong>Subtotal:</strong> <%= @invoice.total_revenue %></p>
+  </div>
+<% end %>
+
 <h2>Invoice Items</h2>
 <table class="grid-table">
   <thead>

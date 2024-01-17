@@ -52,4 +52,24 @@ RSpec.describe "the admin invoices show" do
     expect(page).to have_content("Invoice status updated.")
     expect(page).to have_content("Completed")
   end
+
+  it "8. Admin Invoice Show Page: Subtotal and Grand Total Revenues" do
+    @customer_1 = Customer.create(first_name: "Steve", last_name: "Minecraft")
+    @merchant_3 = Merchant.create(name: "Chucky Cheese")
+    @coupon_1 = @merchant_3.coupons.create(name: "$10 off", code: "10off", percent_off: 5, status: 0)
+    @item_4 = @merchant_3.items.create(name: "Moldy Cheese", description: "ew", unit_price: 1199, merchant_id: @merchant_3.id)
+    @item_5 = @merchant_3.items.create(name: "Fortnite Amongus", description: "ew", unit_price: 20, merchant_id: @merchant_3.id)
+    @invoice_3 = @coupon_1.invoices.create(coupon_id: @coupon_1.id, customer: @customer_1, created_at: 5.days.ago, status: "in progress")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_4, quantity: 5, unit_price: @item_4.unit_price, status: "packaged")
+    InvoiceItem.create!(invoice: @invoice_3, item: @item_5, quantity: 10, unit_price: @item_5.unit_price, status: "packaged")
+    # When I visit one of my admin invoice show pages
+    visit "/admin/invoices/#{@invoice_3.id}"
+    # I see the name and code of the coupon that was used (if there was a coupon applied)
+    expect(page).to have_content(@coupon_1.name)
+    expect(page).to have_content(@coupon_1.code)
+    # And I see both the subtotal revenue from that invoice (before coupon) 
+    expect(page).to have_content(6195)
+    # and the grand total revenue (after coupon) for this invoice.
+    expect(page).to have_content(5885)
+  end
 end
