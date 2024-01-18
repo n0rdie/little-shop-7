@@ -26,7 +26,7 @@ class Merchant::CouponsController < ApplicationController
 
     def update
         @coupon = Coupon.find(params[:id])
-        if @coupon.status == "inactive"
+        if @coupon.status == "inactive" && @coupon.merchant.num_active_coupons < 5
             @coupon.update(status: "active")
         else
             @coupon.update(status: "inactive")
