@@ -84,4 +84,39 @@ RSpec.describe "Coupon Create", type: :feature do
     
     expect(page).to_not have_content("Supersale")
   end
+
+  it "2. Merchant Coupon Create -- SAD (not unique code)" do 
+    coupon_3 = @merchant_1.coupons.create(name: "unique", code: "unique", dollar_off: 10)
+
+    visit "/merchants/#{@merchant_1.id}/coupons"
+    click_on("Create new coupon")
+
+    fill_in "Name", with: "Nothing"
+    fill_in "Code", with: "unique"
+    fill_in "Percent off", with: "5"
+
+    click_on("Submit")
+
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons")
+    
+    expect(page).to_not have_content("Nothing")
+  end
+
+  it "2. Merchant Coupon Create -- SAD (not unique code in other mechant)" do 
+    merchant_2 = Merchant.create(name: "Chucky Cheese")
+    coupon_3 = merchant_2.coupons.create(name: "unique", code: "unique", dollar_off: 10)
+
+    visit "/merchants/#{@merchant_1.id}/coupons"
+    click_on("Create new coupon")
+
+    fill_in "Name", with: "Nothing"
+    fill_in "Code", with: "unique"
+    fill_in "Percent off", with: "5"
+
+    click_on("Submit")
+
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/coupons")
+    
+    expect(page).to_not have_content("Nothing")
+  end
 end 

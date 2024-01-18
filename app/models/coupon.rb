@@ -1,6 +1,7 @@
 class Coupon < ApplicationRecord
   belongs_to :merchant
   validates :name, presence: true
+  validates :code, presence: true, uniqueness: true
   has_many :invoices
   has_many :transactions, through: :invoices
   attribute :status, default: -> { 0 }
